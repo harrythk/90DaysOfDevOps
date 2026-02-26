@@ -71,12 +71,54 @@ CMD ["echo", "hello"]
 harry@NEW4090-G8:~/my-docker-project/my-http-server/cmd-test$ docker run test-cmd:latest echo Hello world
 Hello world
 
+# Create an image with ENTRYPOINT ["echo"] — run it, then run it with additional arguments. What happens?
 
+FROM alpine:latest
 
+ENTRYPOINT ["echo"]
 
+harry@NEW4090-G8:~/my-docker-project/Entrypoint-test$ docker run entrypoint-test:latest Hello India
+Hello India
 
+# Write in your notes: When would you use CMD vs ENTRYPOINT?
 
+CMD provides a default command that can be overwritten during execusion.
+ENTRYPOINT takes arguments as paramter to run.
 
+=============================================================================================================================================================
+
+## Task 4: Build a Simple Web App Image
+
+# Create a small static HTML file (index.html) with any content
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Docker Page</title>
+</head>
+<body>
+    <h1>Hello from my container 🚀</h1>
+    <p>This is my HTML file.</p>
+</body>
+</html>
+
+# Write a Dockerfile that:
+Uses nginx:alpine as base
+Copies your index.html to the Nginx web directory
+
+FROM nginx:alpine
+COPY index.html /usr/share/nginx/html/
+EXPOSE 80
+
+# Build and tag it my-website:v1
+docker build -t my-website:v1 .
+
+# Run it with port mapping and access it in your browser
+harry@NEW4090-G8:~/my-docker-project/simple_webapp_image$ docker run -d -p 80:80 my-website:v1
+356cdc168212f274399306b3dbc989554e382eca2bd5677d1dd6f7fd0523a812
+<img width="257" height="96" alt="image" src="https://github.com/user-attachments/assets/3200e964-582b-4420-a7b1-e4e48ba15743" />
+
+=============================================================================================================================================================
 
 
 
