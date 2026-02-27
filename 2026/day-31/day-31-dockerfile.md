@@ -29,7 +29,7 @@ my-ubuntu:v1   f295a45a3342        252MB         82.3MB
 harry@NEW4090-G8:~/my-docker-project/my-first-image$ docker run -it my-ubuntu:v1
 Hello from my custom image!
 
-=============================================================================================================================================================
+========================================================================================
 
 ## Task 2: Dockerfile Instructions
 
@@ -57,7 +57,7 @@ RUN apk --no-cache -U add python3 && \
 
 CMD ["python3", "-m", "http.server", "8000"]
 
-=============================================================================================================================================================
+========================================================================================
 
 ## Task 3: CMD vs ENTRYPOINT
 
@@ -85,7 +85,7 @@ Hello India
 CMD provides a default command that can be overwritten during execusion.
 ENTRYPOINT takes arguments as paramter to run.
 
-=============================================================================================================================================================
+=====================================================================================
 
 ## Task 4: Build a Simple Web App Image
 
@@ -118,20 +118,44 @@ harry@NEW4090-G8:~/my-docker-project/simple_webapp_image$ docker run -d -p 80:80
 356cdc168212f274399306b3dbc989554e382eca2bd5677d1dd6f7fd0523a812
 <img width="257" height="96" alt="image" src="https://github.com/user-attachments/assets/3200e964-582b-4420-a7b1-e4e48ba15743" />
 
-=============================================================================================================================================================
+===================================================================================
+
+## Task 5: .dockerignore
+
+# Create a .dockerignore file in one of your project folders
+# Add entries for: node_modules, .git, *.md, .env
+
+harry@NEW4090-G8:~/my-docker-project/my-http-server/simple-http-server$ cat .dockerignore 
+nodes_modules
+.git
+*.md
+.env
+
+# Build the image — verify that ignored files are not included
+
+harry@NEW4090-G8:~/my-docker-project/my-http-server/simple-http-server$ docker ps
+CONTAINER ID   IMAGE                       COMMAND                  CREATED         STATUS         PORTS                                         NAMES
+c43a0f4624e1   simple-http-server:latest   "python3 -m http.ser…"   6 seconds ago   Up 5 seconds   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp   eager_merkle
+
+harry@NEW4090-G8:~/my-docker-project/my-http-server/simple-http-server$ docker exec -it c43a0f4624e1 sh
+/app # ls -a
+.              ..             .dockerignore  .gitignore     Dockerfile     LICENSE        example        test.env
 
 
 
+==================================================================================
 
+## Task 6: Build Optimization
 
+# Build an image, then change one line and rebuild — notice how Docker uses cache
 
+CACHED [2/4] WORKDIR /app 
+Cache was used for WORKDIR /app
 
+# Reorder your Dockerfile so that frequently changing lines come last
 
-
-
-
-
-
+# Write in your notes: Why does layer order matter for build speed?
+If a layer has not changed, Docker reuses it. If a layer changes, all layers below it must be rebuilt.
 
 
 
