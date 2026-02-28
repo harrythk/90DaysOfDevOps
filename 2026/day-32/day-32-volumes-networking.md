@@ -69,10 +69,28 @@ Ping to other container ip address works.
 
 ## Task 5: Custom Networks
 
+# Create a custom bridge network called my-app-net
+<img width="816" height="223" alt="image" src="https://github.com/user-attachments/assets/e81ebbdb-128d-4d01-95b0-832fca3ec647" />
 
+# Run two containers on my-app-net
+<img width="1487" height="432" alt="image" src="https://github.com/user-attachments/assets/0cded3cc-b180-4726-bd12-08de9f39d3ef" />
 
+# Can they ping each other by name now?
+<img width="591" height="184" alt="image" src="https://github.com/user-attachments/assets/97338e73-7f52-431a-921c-d3f2764fb049" />
+Yes the ping works now.
 
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+## Task 6: Put It Together
+
+# Create a custom network
+# Run a database container (MySQL/Postgres) on that network with a volume for data
+# Run an app container (use any image) on the same network
+# Verify the app container can reach the database by container name
+
+I already have the same setup as defined above; I have nginx ruuning on my-app-net and mysql running on same network.
+On nginx installed iputils-ping, now ping works by name as both containers are in smae user defined bridge network.
+<img width="922" height="214" alt="image" src="https://github.com/user-attachments/assets/334937b3-d2de-41b7-8435-f71e498d25c9" />
 
 
 
