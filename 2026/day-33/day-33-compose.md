@@ -41,9 +41,65 @@ harry@NEW4090-G8:~/my-docker-project/compose-basics$ docker compose down
 
 ## Task 3: Two-Container Setup
 
+Write a docker-compose.yml that runs:
+A WordPress container
+A MySQL container
+They should:
+
+Be on the same network (Compose does this automatically)
+MySQL should have a named volume for data persistence
+WordPress should connect to MySQL using the service name
+Start it, access WordPress in your browser, and set it up.
 
 
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-wordpress
+    environment:
+      MYSQL_USER: wpuser
+      MYSQL_ROOT_PASSWORD: Test@123
+      MYSQL_DATABASE: wordpressdb
+      MYSQL_PASSWORD: wppass
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pTest@123"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    ports:
+      - "3306:3306"
+    volumes:
+      - wordpress_sql:/var/lib/mysql 
+    networks:
+      - wordpress-nw
 
+  wordpress:
+    image: wordpress
+    container_name: cont_wordpress
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_NAME: wordpressdb
+      WORDPRESS_DB_USER: wpuser
+      WORDPRESS_DB_PASSWORD: wppass
+    networks:
+      - wordpress-nw
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+networks:
+  wordpress-nw:
+    driver: bridge
+volumes:
+  wordpress_sql:
+
+
+Verify: Stop and restart with docker compose down and docker compose up — is your WordPress data still there? - Yes the data is still there.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 
