@@ -111,7 +111,7 @@ startup_script:
 # When would you use | vs >?
 
 | is used when you want to keep line breaks. Normally used with shell scripting in yaml.
-> is used when you want to use single line.
+">" is used when you want to use single line.
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
