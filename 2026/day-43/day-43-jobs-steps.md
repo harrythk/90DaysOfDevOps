@@ -170,8 +170,56 @@ Triggers on push to any branch
 Has a lint job and a test job running in parallel
 Has a summary job that runs after both, prints whether it's a main branch push or a feature branch push, and prints the commit message
 
+--------------------------------
+
+name: Smart Pipeline
+
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v4
+      
+      - name: Lint step
+        run: echo "Running Lint"
+  
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v4
+      
+      - name: Test Step
+        run: echo "Running Tests"
+  
+  summary:
+    needs: [lint, test]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print branch name
+        run: |
+          if ["${{ github.ref_name }}" = "main"]; then
+            echo "This is push to the main branch."
+          else
+            echo "This is push to the feature branch: ${{ github.ref_name }}"
+          fi
+      
+      - name: Print Commit message
+        run: |
+          echo "Commit message: ${{ github.event.commits[0].message }}"
 
 
+<img width="948" height="382" alt="image" src="https://github.com/user-attachments/assets/91f428cc-6c1c-4e2d-9c7e-d0fa1cd80df8" />
+
+
+<img width="547" height="259" alt="image" src="https://github.com/user-attachments/assets/11d67527-1504-471c-a327-a84863c02d7d" />
 
 
 
