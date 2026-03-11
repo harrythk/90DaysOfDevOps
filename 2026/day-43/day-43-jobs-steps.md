@@ -120,4 +120,63 @@ In a workflow, add:
 # A job that only runs on push events, not on pull requests
 # A step with continue-on-error: true — what does this do?
 
+name: Conditionals Test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  conditionaals:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Runs when branch is main
+        if: github.ref == 'refs/heads/main'
+        run: echo "The current branch name is ${{ github.ref_name }}"
+      
+      - name: Intentional failure step
+        run: exit 1
+        continue-on-error: true
+      
+      - name: Runs when previous step fail
+        if: failure()
+        run: echo "Previous step failed"
+  
+  push-event:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: run on push event
+        run: echo "There was a push event then this job is running."
+      
+      - name: Continuation step
+        run: |
+          echo "This step will fail"
+          exit 1
+        continue-on-error: true
+      
+      - name: Step after error
+        run: echo "Workflow continued even after failure"
+
+  <img width="560" height="365" alt="image" src="https://github.com/user-attachments/assets/c20c0ff9-7507-4b7e-a686-6075c7a4b356" />
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+## Task 5: Putting It Together
+# Create .github/workflows/smart-pipeline.yml that:
+
+Triggers on push to any branch
+Has a lint job and a test job running in parallel
+Has a summary job that runs after both, prints whether it's a main branch push or a feature branch push, and prints the commit message
+
+
+
+
+
+
+
+
+
+
 
