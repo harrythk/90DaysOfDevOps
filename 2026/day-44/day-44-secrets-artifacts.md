@@ -101,12 +101,96 @@ Job 1: generate a file and upload it as an artifact
 Job 2: download the artifact from Job 1 and use it (print its contents)
 
 
+name: Artifact generate and download
+
+on:
+  workflow_dispatch:
+
+jobs:
+  artifact-generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v4
+
+      - name: generating a report
+        run: |
+          mkdir -p Reports
+          echo "Test result summary" >> Reports/test.log
+          ls -la >> Reports/test.log
+      
+      - name: uploading report
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: Reports/test.log
+  
+  artifact-download:
+    runs-on: ubuntu-latest
+    needs: [artifact-generate]
+    steps:
+      - name: downloading report
+        uses: actions/download-artifact@v4
+        with:
+          name: test-report
+          path: Reports
+      
+      - name: use of artifact
+        run: cat Reports/test.log
 
 
+<img width="1608" height="649" alt="image" src="https://github.com/user-attachments/assets/31257d37-753c-465f-8965-4d9e09a293dc" />
+
+<img width="1835" height="803" alt="image" src="https://github.com/user-attachments/assets/6155e017-e973-47ef-b3f8-2ce191fc191f" />
 
 
++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+## Take any script from your earlier days (Python or Shell) and run it in CI:
 
+Add your script to the github-actions-practice repo
+Write a workflow that:
+Checks out the code
+Installs any dependencies needed
+Runs the script
+Fails the pipeline if the script exits with a non-zero code
+
+name: Testing in CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  first-pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v4
+      
+      - name: setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      
+      - name: run program
+        run: python3 hello.py
+      
+      - name: exit on failure
+        if: failure()
+        run: |
+          echo "Script failed"
+          exit 1
+        
+<img width="1859" height="673" alt="image" src="https://github.com/user-attachments/assets/e9331a19-fd91-494c-8ff5-643a64664764" />
+
+## Intentionally break the script — verify the pipeline goes red
+
+<img width="1856" height="811" alt="image" src="https://github.com/user-attachments/assets/dcb1608e-2edc-4b75-8fab-b6eb45e8f953" />
+
+## Fix it — verify it goes green again
+
+<img width="1473" height="641" alt="image" src="https://github.com/user-attachments/assets/6868346f-27c9-4326-9d17-115be525b445" />
 
 
 
