@@ -32,3 +32,91 @@ Doing so can expose your credentials to other who can expolit your pipeline.
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++
 
+## Task 2: Use Secrets as Environment Variables
+Pass a secret to a step as an environment variable
+Use it in a shell command without ever hardcoding it
+Add DOCKER_USERNAME and DOCKER_TOKEN as secrets (you'll need these on Day 45)
+
+name: Docker Login Test
+
+on:
+  workflow_dispatch
+
+jobs:
+  docker-login:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Docker login check using secrets
+        env:
+          DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
+          DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+        run: |
+          echo "$DOCKER_TOKEN" | docker login \
+          --username "$DOCKER_USERNAME" \
+          --password-stdin
+
+
+<img width="1860" height="717" alt="image" src="https://github.com/user-attachments/assets/7f68e691-0bf5-4aac-8ee4-5c1d3238e7a2" />
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+## Task 3: Upload Artifacts
+Create a step that generates a file — e.g., a test report or a log file
+Use actions/upload-artifact to save it
+After the workflow runs, download the artifact from the Actions tab
+
+name: Artifact generate and download
+
+on:
+  workflow_dispatch:
+
+jobs:
+  artifact-generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v4
+
+      - name: generating a report
+        run: |
+          mkdir -p Reports
+          echo "Test result summary" >> Reports/test.log
+          ls -la >> Reports/test.log
+      
+      - name: downloading report
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: Reports/test.log
+
+
+<img width="1871" height="655" alt="image" src="https://github.com/user-attachments/assets/97e5c984-a084-4e05-8e10-d1764cd82a10" />
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+## Task 4: Download Artifacts Between Jobs
+Job 1: generate a file and upload it as an artifact
+Job 2: download the artifact from Job 1 and use it (print its contents)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
