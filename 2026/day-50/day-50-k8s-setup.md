@@ -13,4 +13,9 @@ Kubernetes was created by google and it was made open source in 2014. It was ins
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 # Task 2: Draw the Kubernetes Architecture
+Unable to paste the photo here
 
+
+What happens when you run kubectl apply -f pod.yaml? Trace the request through each component.
+What happens if the API server goes down?
+What happens if a worker node goes down?
