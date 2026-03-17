@@ -17,7 +17,7 @@ Kubernetes was created by google and it was made open source in 2014. It was ins
 <img width="616" height="368" alt="image" src="https://github.com/user-attachments/assets/3401f450-bbd5-4a48-b7bc-83f786df4b9d" />
 
 
-# What happens when you run kubectl apply -f pod.yaml? Trace the request through each component.
+## What happens when you run kubectl apply -f pod.yaml? Trace the request through each component.
 
 kubectl apply -f pod.yml creates pod for the image mationed in the yml file. Below is the trace:
 
@@ -26,11 +26,11 @@ kubectl apply -f pod.yml creates pod for the image mationed in the yml file. Bel
 3. Then as per etcd repose, scheduler reach kubelet to create a pod.
 4. kubelet create the pod and updated back API server.
 
-# What happens if the API server goes down?
+## What happens if the API server goes down?
 
 If API server goes down, control plane stops controllong the pods. Which ever pod is down will continue untill it crash. Scaling can't be done.
 
-# What happens if a worker node goes down?
+## What happens if a worker node goes down?
 API server doesn't get its status and it considers the worker dead. So, it created pods on other healthy nodes to compenste the loss of pods.
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
