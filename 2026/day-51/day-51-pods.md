@@ -82,8 +82,92 @@ exit
 
 <img width="571" height="109" alt="image" src="https://github.com/user-attachments/assets/481e0a8d-cc16-4f61-82b4-8191a477ec0c" />
 
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+# Task 3: Imperative vs Declarative
+
+## Create a pod without a YAML file
+kubectl run redis-pod --image=redis:latest
+
+## Check it
+kubectl get pods
+
+<img width="571" height="98" alt="image" src="https://github.com/user-attachments/assets/a3995967-1343-4566-980a-767c89828787" />
 
 
+## kubectl get pod redis-pod -o yaml
+
+<img width="341" height="416" alt="image" src="https://github.com/user-attachments/assets/bc92976e-0840-4b55-b9d3-fab2a821688c" />
+
+## kubectl run test-pod --image=nginx --dry-run=client -o yaml
+
+<img width="658" height="199" alt="image" src="https://github.com/user-attachments/assets/a6f3a619-0747-4033-98f9-d2845b96bb31" />
+
+A few fields like status, restartPolicy and dbsPolicy are extra when the pod yml is created via imperative command.
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+# Task 4: Validate Before Applying
+
+## Check if the YAML is valid without actually creating the resource
+kubectl apply -f nginx-pod.yaml --dry-run=client
+
+## Validate against the cluster's API (server-side validation)
+kubectl apply -f nginx-pod.yaml --dry-run=server
+
+<img width="649" height="63" alt="image" src="https://github.com/user-attachments/assets/cb33d8fc-29ee-40f0-a45b-1856bfb13936" />
+
+## Now intentionally break your YAML (remove the image field or add an invalid field) and run dry-run again. See what error you get.
+
+<img width="641" height="32" alt="image" src="https://github.com/user-attachments/assets/266969f6-44ec-4bc1-a7df-c7c32141b30b" />
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+# Task 5: Pod Labels and Filtering
+
+## List all pods with their labels
+kubectl get pods --show-labels
+
+<img width="551" height="71" alt="image" src="https://github.com/user-attachments/assets/4426de96-0695-4872-9a61-891ab82db88e" />
 
 
+## Filter pods by label
+kubectl get pods -l app=nginx
+kubectl get pods -l environment=dev
 
+<img width="596" height="86" alt="image" src="https://github.com/user-attachments/assets/f9ffdd87-196b-47ec-b043-cf18b2d41b53" />
+
+
+## Add a label to an existing pod
+kubectl label pod nginx-pod environment=production
+
+<img width="655" height="33" alt="image" src="https://github.com/user-attachments/assets/c273fb2f-37ac-4497-9e30-726f980139b9" />
+
+
+## Verify
+kubectl get pods --show-labels
+
+<img width="563" height="77" alt="image" src="https://github.com/user-attachments/assets/d909bb99-a299-4540-860e-5308492fb703" />
+
+
+## Remove a label
+kubectl label pod nginx-pod environment-
+
+<img width="595" height="32" alt="image" src="https://github.com/user-attachments/assets/3f7fe76e-4854-4485-a55b-77a189a9a94f" />
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+# Task 6: Clean Up
+
+## Delete by name
+kubectl delete pod nginx-pod
+kubectl delete pod busybox-pod
+kubectl delete pod redis-pod
+
+<img width="558" height="89" alt="image" src="https://github.com/user-attachments/assets/0f470248-fee7-4790-b01e-8ef94cbcaecf" />
+
+# Verify everything is gone
+kubectl get pods
+
+<img width="476" height="36" alt="image" src="https://github.com/user-attachments/assets/bf8bf0fa-a018-49b5-878c-94c6fbff41d4" />
