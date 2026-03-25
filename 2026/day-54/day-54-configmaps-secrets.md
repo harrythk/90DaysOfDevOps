@@ -1,10 +1,10 @@
-## Task 1: Create a ConfigMap from Literals
+# Task 1: Create a ConfigMap from Literals
 
-# Use kubectl create configmap with --from-literal to create a ConfigMap called app-config with keys APP_ENV=production, APP_DEBUG=false, and APP_PORT=8080
+## Use kubectl create configmap with --from-literal to create a ConfigMap called app-config with keys APP_ENV=production, APP_DEBUG=false, and APP_PORT=8080
 <img width="788" height="42" alt="image" src="https://github.com/user-attachments/assets/55bccc76-c383-4f4e-a19a-6f857284195a" />
 
 
-# Inspect it with kubectl describe configmap app-config and kubectl get configmap app-config -o yaml
+## Inspect it with kubectl describe configmap app-config and kubectl get configmap app-config -o yaml
 
 <img width="647" height="331" alt="image" src="https://github.com/user-attachments/assets/e2641d8f-c622-4bf7-9793-f3e9a1ecda16" />
 
@@ -12,8 +12,49 @@
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-## Task 2: Create a ConfigMap from a File
+# Task 2: Create a ConfigMap from a File
 
-# Write a custom Nginx config file that adds a /health endpoint returning "healthy"
-Create a ConfigMap from this file using kubectl create configmap nginx-config --from-file=default.conf=<your-file>
+## Write a custom Nginx config file that adds a /health endpoint returning "healthy"
+## Create a ConfigMap from this file using kubectl create configmap nginx-config --from-file=default.conf=<your-file>
 The key name (default.conf) becomes the filename when mounted into a Pod
+
+<img width="779" height="47" alt="image" src="https://github.com/user-attachments/assets/b1e3da1d-bd22-4f18-aa7b-30487a46dbd8" />
+
+<img width="1324" height="642" alt="image" src="https://github.com/user-attachments/assets/23466fc3-0917-424b-8da1-239a294fafdc" />
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+# Task 3: Use ConfigMaps in a Pod
+## Write a Pod manifest that uses envFrom with configMapRef to inject all keys from app-config as environment variables. Use a busybox container that prints the values.
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello
+spec:
+      containers:
+      - name: hello
+        image: busybox
+        command:
+          - /bin/sh
+          - -c
+          - |
+            echo "APP_ENV=$APP_ENV"
+            echo "APP_DEBUG=$APP_DEBUG"
+            echo "APP_PORT=$APP_PORT"
+            sleep 3600
+        envFrom:
+          - configMapRef:
+              name: app-config 
+
+<img width="1181" height="242" alt="image" src="https://github.com/user-attachments/assets/96685df2-1b8a-474a-a9cf-189178ea252a" />
+
+## Write a second Pod manifest that mounts nginx-config as a volume at /etc/nginx/conf.d. Use the nginx image.
+
+
+
+
+
+
+
+
