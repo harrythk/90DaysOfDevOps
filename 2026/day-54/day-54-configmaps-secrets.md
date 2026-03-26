@@ -51,6 +51,48 @@ spec:
 
 ## Write a second Pod manifest that mounts nginx-config as a volume at /etc/nginx/conf.d. Use the nginx image.
 
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-health
+spec:
+      containers:
+      - name: nginx-health
+        image: nginx:latest
+        ports:
+          - containerPort: 80
+        volumeMounts:
+          - name: nginx-config-storage
+            mountPath: /etc/nginx/conf.d
+      volumes:
+        - name: nginx-config-storage
+          configMap:
+            name: nginx-config
+
+## Test that the mounted config works: kubectl exec <pod> -- curl -s http://localhost/health
+
+<img width="461" height="29" alt="image" src="https://github.com/user-attachments/assets/5402bc6b-e9ba-4574-ad49-9dcaf120150c" />
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+# Task 4: Create a Secret
+
+## Use kubectl create secret generic db-credentials with --from-literal to store DB_USER=admin and DB_PASSWORD=s3cureP@ssw0rd
+## Inspect with kubectl get secret db-credentials -o yaml — the values are base64-encoded
+## Decode a value: echo '<base64-value>' | base64 --decode
+
+<img width="373" height="199" alt="image" src="https://github.com/user-attachments/assets/60306e12-d0d7-436e-ab46-26b3f3b9627b" />
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+# Task 5: Use Secrets in a Pod
+
+
+
 
 
 
