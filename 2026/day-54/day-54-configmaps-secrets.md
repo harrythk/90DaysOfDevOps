@@ -91,7 +91,41 @@ spec:
 
 # Task 5: Use Secrets in a Pod
 
+## Write a Pod manifest that injects DB_USER as an environment variable using secretKeyRef
+## In the same Pod, mount the entire db-credentials Secret as a volume at /etc/db-credentials with readOnly: true
 
+apiVersion: v1
+kind: Pod
+metadata:
+  name: db-secret
+spec:
+      containers:
+      - name: db-secret
+        image: busybox
+        command:
+          - /bin/sh
+          - -c
+          - |
+            echo "Hello World"
+            sleep 3600
+        env:
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: DB_USER
+        volumeMounts:
+          - name: secret-volume
+            readOnly: true
+            mountPath: "/etc/db-credentials"
+      volumes:
+      - name: secret-volume
+        secret:
+          secretName: db-credentials
+
+## Verify: each Secret key becomes a file, and the content is the decoded plaintext value
+
+<img width="635" height="58" alt="image" src="https://github.com/user-attachments/assets/3e59589d-a693-4f4e-8e97-86e313e311ca" />
 
 
 
